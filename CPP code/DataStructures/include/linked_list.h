@@ -9,7 +9,7 @@ class LinkedList {
 
         struct LinkedNode {
             int val;
-            LinkedNode* next;
+            LinkedNode* next = nullptr;
         };
 
         void push_front(int val);

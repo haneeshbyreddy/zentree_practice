@@ -1,5 +1,6 @@
 #include "linked_list.h"
 #include <vector>
+#include <iostream>
 
 using namespace std;
 
@@ -25,10 +26,10 @@ void LinkedList::push_back(int val) {
 	if (head == nullptr) {
 		head = new_node;
 		tail = new_node;
-	};
-	if (head != nullptr) {
+	}
+	else {
 		tail->next = new_node;
-		tail = tail->next;
+		tail = new_node;
 	};
 }
 
@@ -68,6 +69,7 @@ vector<int> LinkedList::list() {
 	LinkedNode* temp = head;
 	while (temp) {
 		ans.push_back(temp->val);
+		cout << temp->val << endl;
 		temp = temp->next;
 	}
 	return ans;

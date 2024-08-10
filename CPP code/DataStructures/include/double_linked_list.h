@@ -8,8 +8,8 @@ class DoubleLinked {
 
         struct LinkedNode {
             int val;
-            LinkedNode* prev;
-            LinkedNode* next;
+            LinkedNode* prev = nullptr;
+            LinkedNode* next = nullptr;
         };
 
         void push_front(int val);

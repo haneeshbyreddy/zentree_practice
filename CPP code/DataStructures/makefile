@@ -15,6 +15,24 @@ endif
 
 all: heap_example linked_list_example
 
+double_linked_example: .double_linked_list
+	@name=double_linked_example; \
+	${CXX} ${FLAG} -I ${INC} -c ${SRC}/$${name}.cpp -o ${OBJ}/$${name}.o; \
+	${CXX} ${FLAG} ${OBJ}/$${name}.o ${OBJ}/double_linked_list.o -o ${Target}/$${name}; \
+	${Target}/$${name};
+
+stack_example: .stack
+	@name=stack_example; \
+	${CXX} ${FLAG} -I ${INC} -c ${SRC}/$${name}.cpp -o ${OBJ}/$${name}.o; \
+	${CXX} ${FLAG} ${OBJ}/$${name}.o ${OBJ}/stack.o -o ${Target}/$${name}; \
+	${Target}/$${name};
+
+queue_example: .queue
+	@name=queue_example; \
+	${CXX} ${FLAG} -I ${INC} -c ${SRC}/$${name}.cpp -o ${OBJ}/$${name}.o; \
+	${CXX} ${FLAG} ${OBJ}/$${name}.o ${OBJ}/queue.o -o ${Target}/$${name}; \
+	${Target}/$${name};
+
 heap_example: .heap
 	@name=heap_example; \
 	${CXX} ${FLAG} -I ${INC} -c ${SRC}/$${name}.cpp -o ${OBJ}/$${name}.o; \
@@ -29,7 +47,7 @@ linked_list_example: .linked_list
 
 .stack:
 	@name=stack; \
-	${CXX} ${FLAG} -I ${INC} -c ${SRC}/$${name}.cpp -o ${OBJ}/$${name}.o;
+	${CXX} ${FLAG} -I ${INC} -c ${LIB}/$${name}.cpp -o ${OBJ}/$${name}.o;
 
 .linked_list: 
 	@name=linked_list; \
@@ -45,7 +63,7 @@ linked_list_example: .linked_list
 
 .queue: 
 	@name=queue; \
-	${CXX} ${FLAG} -I ${INC} -c ${SRC}/$${name}.cpp -o ${OBJ}/$${name}.o;
+	${CXX} ${FLAG} -I ${INC} -c ${LIB}/$${name}.cpp -o ${OBJ}/$${name}.o;
 
 clean:
 	rm -rf ${Target}/*

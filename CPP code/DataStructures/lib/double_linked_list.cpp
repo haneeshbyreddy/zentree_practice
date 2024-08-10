@@ -1,48 +1,73 @@
-#include "logger.h"
-#include <initializer_list>
+#include "double_linked_list.h"
 
 using namespace std;
 
-struct ListNode {
-    int val;
-    ListNode* prev = nullptr;
-    ListNode* next = nullptr;
-};
+DoubleLinked::DoubleLinked() {
+    head = nullptr;
+    tail = nullptr;
+}
 
-int main() {
-    ListNode* head = nullptr;
-    ListNode* tail = nullptr;
-
-    LOG(LOG_LEVEL_INFO, "Creating the double linked list");
-    for (int i : {1,2,4,5,7,8}) {
-        ListNode* new_node = new ListNode;
-        new_node->val = i;
-        if (head == nullptr) {
-            head = new_node;
-            tail = new_node;
-        }
-        else {
-            tail->next = new_node;
-            ListNode* temp = tail;
-            tail = tail->next;
-            tail->prev = temp;
-            temp = nullptr;
-        }
+void DoubleLinked::push_back(int val) {
+    LinkedNode* new_node = new LinkedNode;
+    new_node->val = val;
+    if (head == nullptr) {
+        head = new_node;
+        tail = new_node;
     }
-
-    LOG(LOG_LEVEL_INFO, "Traversing the double linked list");
-    ListNode* curr = head;
-    while (curr != nullptr) {
-        LOG(LOG_LEVEL_INFO, "Current Node value : %d", curr->val);
-        curr = curr->next;
+    else {
+        tail->next = new_node;
+        LinkedNode* temp = tail;
+        tail = tail->next;
+        tail->prev = temp;
+        temp = nullptr;
     }
-
-    LOG(LOG_LEVEL_INFO, "Reverse traversing the double linked list");
-    curr = tail;
-    while (curr != nullptr) {
-        LOG(LOG_LEVEL_INFO, "Current Node value : %d", curr->val);
-        curr = curr->prev;
+}
+void DoubleLinked::push_front(int val) {
+    LinkedNode* new_node = new LinkedNode;
+    new_node->val = val;
+    if (head == nullptr) {
+        head = new_node;
+        tail = new_node;
     }
-
-    return 0;
+    else {
+        new_node->next = head;
+        head->prev = new_node;
+        head = new_node;
+    }
+}
+int DoubleLinked::pop_front() {
+    if (head == nullptr) return -1;
+    if (head == tail) {
+        head = nullptr;
+        tail = nullptr;
+    }
+    else {
+        head = head->next;
+        head->prev = nullptr;
+    }
+}
+int DoubleLinked::pop_back() {
+    if (head == tail) {
+        head = nullptr;
+        tail = nullptr;
+    }
+    else {
+        tail = tail->prev;
+        tail->next = nullptr;
+    }
+}
+int DoubleLinked::front() {
+    return head->val;
+}
+int DoubleLinked::back() {
+    return tail->val;
+}
+vector<int> DoubleLinked::list() {
+    my_list.clear();
+    LinkedNode* temp = head;
+    while (temp) {
+        my_list.push_back(temp->val);
+        temp = temp->next;
+    }
+    return my_list;
 }

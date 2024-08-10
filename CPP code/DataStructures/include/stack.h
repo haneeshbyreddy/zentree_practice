@@ -1,12 +1,12 @@
 #include "logger.h"
 #include <vector>
 
-class Queue {
-
+class Stack {
     public:
         void push(int var);
         int pop();
-        int front();
+        int top();
+        bool is_empty();
     private:
-        std::vector<int> queue;
+        std::vector<int> arr;
 };

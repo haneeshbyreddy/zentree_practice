@@ -10,7 +10,9 @@ int main() {
         list.push_back(i);
         LOG(LOG_LEVEL_INFO, "inserted item %d to back", list.back());
     }
-
-    list.list();
+    list.pop_front();
+    for (int i : list.list()) {
+        LOG(LOG_LEVEL_INFO, "number : %d", i);
+    }
     return 0;
 }

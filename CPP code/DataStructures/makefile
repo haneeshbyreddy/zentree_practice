@@ -18,6 +18,11 @@ double_linked_example: .double_linked_list ${SRC}/double_linked_example.cpp
 	${CXX} ${FLAG} -I ${INC} -c ${SRC}/$${name}.cpp -o ${OBJ}/$${name}.o; \
 	${CXX} ${FLAG} ${OBJ}/$${name}.o ${OBJ}/double_linked_list.o -o ${Target}/$${name}; \
 
+tree_example: .tree ${SRC}/tree_example.cpp
+	@name=tree_example; \
+	${CXX} ${FLAG} -I ${INC} -c ${SRC}/$${name}.cpp -o ${OBJ}/$${name}.o; \
+	${CXX} ${FLAG} ${OBJ}/$${name}.o ${OBJ}/tree.o -o ${Target}/$${name}; \
+
 stack_example: .stack ${SRC}/stack_example.cpp
 	@name=stack_example; \
 	${CXX} ${FLAG} -I ${INC} -c ${SRC}/$${name}.cpp -o ${OBJ}/$${name}.o; \
@@ -37,6 +42,9 @@ linked_list_example: .linked_list ${SRC}/linked_list_example.cpp
 	name=linked_list_example; \
 	${CXX} ${FLAG} -I ${INC} -c ${SRC}/$${name}.cpp -o ${OBJ}/$${name}.o; \
 	${CXX} ${FLAG} ${OBJ}/$${name}.o ${OBJ}/linked_list.o -o ${Target}/$${name}; \
+
+.tree: ${LIB}/tree.cpp
+	@${CXX} ${FLAG} -I ${INC} -c $< -o ${OBJ}/tree.o;
 
 .stack: ${LIB}/stack.cpp
 	@${CXX} ${FLAG} -I ${INC} -c $< -o ${OBJ}/stack.o;

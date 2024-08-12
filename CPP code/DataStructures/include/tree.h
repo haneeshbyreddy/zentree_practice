@@ -1,13 +1,34 @@
 #include "logger.h"
+#include <vector>
 
-class Tree {
-    struct TreeNode {
-        int val;
-        TreeNode* left = nullptr;
-        TreeNode* right = nullptr;
-    };
+using namespace std;
 
-    Tree(int val);
+struct BinaryNode {
+    int value;
+    BinaryNode* left = nullptr;
+    BinaryNode* right = nullptr;
 
-    void addNode(int val);
+    BinaryNode(int value);
+};
+
+class BinaryTree {
+    public:
+        BinaryNode* root = nullptr;
+        vector<BinaryNode*> q;
+
+        BinaryTree(int val);
+
+        void insert(int val);
+        vector<int> BFT();
+        vector<int> DFT();
+
+    private:
+        void dft(BinaryNode* node, vector<int>& ans);
+        
+};
+
+class BinarySearchTree : public BinaryTree {
+    public:
+        void insert(int val);
+        bool search(int val);
 };

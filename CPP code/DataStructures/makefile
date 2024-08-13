@@ -13,6 +13,11 @@ else
     FLAG = $(STANDARD_FLAGS)
 endif
 
+hash_example: .hash ${SRC}/hash_example.cpp
+	@name=hash_example; \
+	${CXX} ${FLAG} -I ${INC} -c ${SRC}/$${name}.cpp -o ${OBJ}/$${name}.o; \
+	${CXX} ${FLAG} ${OBJ}/$${name}.o ${OBJ}/hash.o -o ${Target}/$${name}; \
+
 double_linked_example: .double_linked_list ${SRC}/double_linked_example.cpp
 	@name=double_linked_example; \
 	${CXX} ${FLAG} -I ${INC} -c ${SRC}/$${name}.cpp -o ${OBJ}/$${name}.o; \
@@ -60,6 +65,9 @@ linked_list_example: .linked_list ${SRC}/linked_list_example.cpp
 
 .queue: ${LIB}/queue.cpp
 	@${CXX} ${FLAG} -I ${INC} -c $< -o ${OBJ}/queue.o;
+	
+.hash: ${LIB}/hash.cpp
+	@${CXX} ${FLAG} -I ${INC} -c $< -o ${OBJ}/hash.o;
 
 clean:
 	rm -rf ${Target}/*

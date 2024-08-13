@@ -54,13 +54,13 @@ vector<int> BinaryTree::DFT() {
 
 void BinarySearchTree::insert(int val) {
     BinaryNode* temp = root;
-    while (temp->left && temp->value < val) {
+    while (temp->left && temp->value > val) {
         temp = temp->left;
     }
-    while (temp->right && temp->value > val) {
+    while (temp->right && temp->value < val) {
         temp = temp->right;
     }
-    if (temp->value < val) {
+    if (temp->value > val) {
         temp->left = new BinaryNode(val);
     }
     else {

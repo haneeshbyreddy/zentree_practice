@@ -23,7 +23,6 @@ def n_queen(row, matrix):
     if row>=len(matrix):
         return True
     for i in range(len(matrix[0])):
-        ans_arr[row] = i
         if matrix[row][i] == 0:
             temp = copy.deepcopy(matrix)
             mark(row, i, temp)
@@ -32,4 +31,3 @@ def n_queen(row, matrix):
     return False 
 
 print(n_queen(0, matrix))
-print(ans_arr)

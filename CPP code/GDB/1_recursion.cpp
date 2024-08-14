@@ -1,5 +1,4 @@
 #include <iostream>
-#include <format>
 using namespace std;
 
 int recursion(int num) {
@@ -8,8 +7,8 @@ int recursion(int num) {
 
 int main() {
 	int var = 4;
-	int factorial = recursion(4);
-	cout << format("factorial of {} is {}", var, factorial) << endl;
+	int factorial = recursion(var);
+	cout << "factorial of " << var << " is " << factorial << endl; 
 	return 0;
 }
 

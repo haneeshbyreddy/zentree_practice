@@ -13,6 +13,11 @@ else
     FLAG = $(STANDARD_FLAGS)
 endif
 
+graph_example: .graph ${SRC}/graph_example.cpp
+	@name=graph_example; \
+	${CXX} ${FLAG} -I ${INC} -c ${SRC}/$${name}.cpp -o ${OBJ}/$${name}.o; \
+	${CXX} ${FLAG} ${OBJ}/$${name}.o ${OBJ}/graph.o -o ${Target}/$${name}; \
+
 hash_example: .hash ${SRC}/hash_example.cpp
 	@name=hash_example; \
 	${CXX} ${FLAG} -I ${INC} -c ${SRC}/$${name}.cpp -o ${OBJ}/$${name}.o; \
@@ -68,6 +73,9 @@ linked_list_example: .linked_list ${SRC}/linked_list_example.cpp
 	
 .hash: ${LIB}/hash.cpp
 	@${CXX} ${FLAG} -I ${INC} -c $< -o ${OBJ}/hash.o;
+
+.graph: ${LIB}/graph.cpp
+	@${CXX} ${FLAG} -I ${INC} -c $< -o ${OBJ}/graph.o;
 
 clean:
 	rm -rf ${Target}/*

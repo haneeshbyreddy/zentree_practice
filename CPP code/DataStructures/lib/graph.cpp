@@ -35,7 +35,7 @@ vector<vector<int>> Graph::get_matrix(int size) {
     return temp;
 }
 
-void Graph::insert_link(int i, int j, int weight=1) {
+void Graph::insert_link(int i, int j, int weight) {
     matrix[i][j] = weight;
     matrix[j][i] = weight;
 }

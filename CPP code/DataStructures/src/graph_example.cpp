@@ -34,6 +34,5 @@ int main() {
 
     int i = 0, j = 4;
     LOG(LOG_LEVEL_INFO, "shortest path %d, %d : %d", i, j, my_graph.shortest_path(i,j));
-    // my_graph.shortest_path(i, j);
     return 0;
 }

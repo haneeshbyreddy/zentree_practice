@@ -19,6 +19,7 @@ graph_example: .graph ${SRC}/graph_example.cpp
 	@name=graph_example; \
 	${CXX} ${FLAG} -I ${INC} -c ${SRC}/$${name}.cpp -o ${OBJ}/$${name}.o; \
 	${CXX} ${FLAG} ${OBJ}/$${name}.o ${OBJ}/graph.o -o ${Target}/$${name}; \
+	$(RUN_GDB)
 
 hash_example: .hash ${SRC}/hash_example.cpp
 	@name=hash_example; \

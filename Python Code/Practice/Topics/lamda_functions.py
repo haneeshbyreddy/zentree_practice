@@ -20,4 +20,3 @@ operations = {
 print("operations with dict and lamda :", )
 print("\tadd(1,3) :", operations['add'](1,3))
 print("\tsub(1,3) :", operations['sub'](1,3))
-

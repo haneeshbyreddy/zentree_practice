@@ -1,4 +1,4 @@
-from DataStructures import Fiboncci, Palindrome, Matrix, Stack
+from DSA import Fiboncci, Palindrome, Matrix, Stack
 
 fib = Fiboncci()
 print(fib.fiboncci(10))

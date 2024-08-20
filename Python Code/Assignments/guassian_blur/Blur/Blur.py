@@ -5,6 +5,15 @@ class Gaussian_blur:
 
     def __init__(self):
         self.gf = [[1/9,1/9,1/9],[1/9,1/9,1/9],[1/9,1/9,1/9]]
+
+    def gaussian_kernal(self, size, sigma):
+        func = lambda x, y : (1/(2*np.pi*sigma**2)) * np.exp(-((x-(size-1)/2)**2 + (y-(size-1)/2)**2) / (2*sigma**2))
+        kernal = np.zeros((size, size))
+        for i in range(size):
+            for j in range(size):
+                kernal[i][j] = func(i, j)
+        kernal /= np.sum(kernal)
+        return kernal
     
     def image_gen(self, image_matrix):
         image_gf = Image.fromarray(image_matrix)
@@ -24,8 +33,10 @@ class Gaussian_blur:
                 new_image_matrix[i][j] = temp
         self.image_gen(new_image_matrix)
 
-    def blur(self, path, to_path):
+    def blur(self, path, to_path, sigma):
         self.to_path = to_path
+        kernel_size = 2 * int(np.ceil(3 * sigma)) + 1
+        self.gf = self.gaussian_kernal(kernel_size, sigma)
         with Image.open(path) as image:
             image_gray = image.convert('L')
             image_matrix = np.array(image_gray)

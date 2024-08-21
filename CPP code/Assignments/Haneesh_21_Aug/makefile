@@ -19,10 +19,10 @@ all: ${TARGET}/double_linked_list
 ${TARGET}/double_linked_list: ${OBJ}/double_linked_list.o ${OBJ}/double_linked_list_example.o
 	${CXX} ${FLAGS} -I ${INC} ${OBJ}/double_linked_list.o ${OBJ}/double_linked_list_example.o -o ${TARGET}/double_linked_list_example 
 
-${OBJ}/double_linked_list.o: ${LIB}/double_linked_list.cpp
+${OBJ}/double_linked_list.o: ${LIB}/double_linked_list.cpp ${LIB}/*
 	${CXX} ${FLAGS} -I ${INC} -c ${LIB}/double_linked_list.cpp -o ${OBJ}/double_linked_list.o
 
-${OBJ}/double_linked_list_example.o: ${SRC}/double_linked_list_example.cpp
+${OBJ}/double_linked_list_example.o: ${SRC}/double_linked_list_example.cpp ${LIB}/*
 	${CXX} ${FLAGS} -I ${INC} -c ${SRC}/double_linked_list_example.cpp -o ${OBJ}/double_linked_list_example.o
 
 clean:

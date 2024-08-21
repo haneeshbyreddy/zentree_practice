@@ -45,7 +45,6 @@ class Gaussian_blur:
 
     def blur(self, path, sigma=-1):
         kernel_size = 2 * int(np.ceil(3 * sigma)) + 1
-        kernel_size = 3
         if sigma>0 and self.sigma != sigma:
             self.sigma = sigma
             self.gf = self.gaussian_kernal(kernel_size)

@@ -1,8 +1,8 @@
-### OSI
+## OSI
 
 - Application layer
-    - Data from User <=> Application layer
     - Features
+        - Data from User <=> Application layer
         - Provides different Protocols to user applications for network communication
     - Protocols
         - DHCP
@@ -62,3 +62,19 @@
         - Ethernet physical layer
         - USB
         - Bluetooth physical layer
+
+## Data walkthrough in OSI
+
+Application Data: "GET /index.html HTTP/1.1"
+↓
+Presentation Data: [Encrypted("GET /index.html HTTP/1.1")]
+↓
+Session Data: [Session Token][Encrypted("GET /index.html HTTP/1.1")]
+↓
+Transport Segment: [TCP Header][Session Token][Encrypted("GET /index.html HTTP/1.1")]
+↓
+Network Packet: [IP Header][TCP Header][Session Token][Encrypted("GET /index.html HTTP/1.1")]
+↓
+Data Link Frame: [Ethernet Header][IP Header][TCP Header][Session Token][Encrypted("GET /index.html HTTP/1.1")][Ethernet Trailer]
+↓
+Physical: 1010101110101010... (bits converted to signals)

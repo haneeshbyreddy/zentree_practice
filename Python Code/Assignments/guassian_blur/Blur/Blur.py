@@ -11,25 +11,30 @@ class Gaussian_blur:
         self.gf = gf
 
     def add_padding(self, matrix, m, n):
-        return np.pad(matrix, [(m,), (n,)], mode='constant')
+        return np.pad(matrix, [(m,), (n,), (0,)], mode='constant')
 
     def image_gen(self, image_gf, to_path):
         image_gf.save(to_path)
 
-    def apply_filter(self, image_matrix, gf):
+    def apply_filter(self, image_matrix, gf, channel=1):
         h1, w1 = len(image_matrix), len(image_matrix[0])
         h2, w2 = len(gf), len(gf[0])
         image_matrix = self.add_padding(image_matrix, h2//2, w2//2)
-        new_image_matrix = np.zeros((h1, w1))
-        for i in range(h1-h2+1):
-            for j in range(w1-w2+1):
-                temp = 0
-                for m in range(h2):
-                    for n in range(w2):
-                        temp += (int(image_matrix[i+m][j+n]) * gf[m][n])
-                new_image_matrix[i][j] = temp
-        image_gf = Image.fromarray(new_image_matrix)
-        image_gf = image_gf.convert('L')
+        new_image_matrix = np.zeros((h1, w1, channel), dtype=np.uint8)
+        for d in range(channel):
+            for i in range(h1-h2+1):
+                for j in range(w1-w2+1):
+                    temp = 0
+                    for m in range(h2):
+                        for n in range(w2):
+                            temp += (int(image_matrix[i+m][j+n][d]) * gf[m][n])
+                    new_image_matrix[i][j][d] = temp
+        if channel==1:
+            image_gf = Image.fromarray(new_image_matrix.reshape((h1,w1)))
+            image_gf = image_gf.convert('L')
+        else:
+            image_gf = Image.fromarray(new_image_matrix, mode="RGB")
+            image_gf = image_gf.convert('RGB')
         return image_gf
 
 
@@ -43,12 +48,12 @@ class Gaussian_blur:
         kernal /= np.sum(kernal)
         return kernal
 
-    def blur(self, path, sigma=-1):
+    def blur(self, path, sigma=-1, color=False):
         kernel_size = 2 * int(np.ceil(3 * sigma)) + 1
         if sigma>0 and self.sigma != sigma:
             self.sigma = sigma
             self.gf = self.gaussian_kernal(kernel_size)
-        with Image.open(path) as image:
-            image_gray = image.convert('L')
-            image_matrix = np.array(image_gray)
-            return self.apply_filter(image_matrix, self.gf)
+        with Image.open(path) as input_image:
+            image = input_image.convert('RGB') if color else input_image.convert("L")
+            image_matrix = np.array(image)
+            return self.apply_filter(image_matrix, self.gf, channel=3 if color else 1)

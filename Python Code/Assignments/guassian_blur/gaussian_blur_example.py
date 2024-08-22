@@ -5,9 +5,14 @@ import os
 
 gb = Gaussian_blur()
 
-image_name = 'input-3.png'
+image_files = os.listdir("data/input")
+for i, image_file in enumerate(image_files):
+    print(f"{i} : {image_file}")
+index = int(input("Enter a index of image :"))
+image_name = image_files[index]
+color = bool(True if input("Do you want color [y/n]:") =='y' else False)
 
-sigmas, color = [round(i*0.1,1) for i in range(1,10,2)], True
+sigmas = [round(i*0.1,1) for i in range(1,10,2)]
 n = len(sigmas)+1
 w = math.ceil(math.sqrt(n))
 blurred_images = []
@@ -15,7 +20,7 @@ blurred_images = []
 for i in sigmas:
     out_path = "data/output/" + '-'.join([str(i),image_name])
     if not os.path.exists(out_path):
-        blur_image = gb.blur("data/input/"+image_name, i, color=True)
+        blur_image = gb.blur("data/input/"+image_name, i, color=color)
         blur_image.save(out_path)
     blurred_images.append(plt.imread(out_path))
 

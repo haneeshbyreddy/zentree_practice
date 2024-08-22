@@ -143,13 +143,8 @@ DoubleLinkedList DoubleLinkedList::MergeSort() {
     DoubleLinkedNode* right = l2.head;
 
     while (left && right) {
-        if (left->value < right->value) {
-            ans.Push(left->value);
-            left = left->next;
-        } else {
-            ans.Push(right->value);
-            right = right->next;
-        }
+        if (left->value<right->value) ans.Push(left->value), left=left->next;
+        else ans.Push(right->value), right=right->next;
     }
 
     while (left) ans.Push(left->value), left=left->next;

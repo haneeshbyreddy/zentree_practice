@@ -34,7 +34,6 @@ class Gaussian_blur:
             image_gf = image_gf.convert('RGB')
         return image_gf
 
-
     def gaussian_kernal(self, size, sigma=-1):
         sigma = self.sigma if sigma==-1 else sigma
         func = lambda x, y : (1/(2*np.pi*sigma**2)) * np.exp(-((x-(size-1)/2)**2 + (y-(size-1)/2)**2) / (2*sigma**2))
@@ -44,6 +43,13 @@ class Gaussian_blur:
                 kernal[i][j] = func(i, j)
         kernal /= np.sum(kernal)
         return kernal
+
+    def edge(self, path, edge):
+        with Image.open(path) as input_image:
+            image = input_image.convert("RGB")
+            image_matrix = np.array(image)
+            fil = [[1,0,-1],[1,0,-1],[1,0,-1]] if edge==0 else [[1,1,1],[0,0,0],[-1,-1,-1]]
+            return self.apply_filter(image_matrix, fil, channel=3)
 
     def blur(self, path, sigma=-1, color=False):
         kernel_size = 2 * int(np.ceil(3 * sigma)) + 1

@@ -22,13 +22,10 @@ class Gaussian_blur:
         image_matrix = self.add_padding(image_matrix, h2//2, w2//2)
         new_image_matrix = np.zeros((h1, w1, channel), dtype=np.uint8)
         for d in range(channel):
-            for i in range(h1-h2+1):
-                for j in range(w1-w2+1):
-                    temp = 0
-                    for m in range(h2):
-                        for n in range(w2):
-                            temp += (int(image_matrix[i+m][j+n][d]) * gf[m][n])
-                    new_image_matrix[i][j][d] = temp
+            for i in range(h1):
+                for j in range(w1):
+                    temp = np.sum(image_matrix[i:i+h2, j:j+w2, d] * gf)
+                    new_image_matrix[i, j, d] = temp
         if channel==1:
             image_gf = Image.fromarray(new_image_matrix.reshape((h1,w1)))
             image_gf = image_gf.convert('L')

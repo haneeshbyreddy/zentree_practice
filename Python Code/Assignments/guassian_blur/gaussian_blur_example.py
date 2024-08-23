@@ -2,6 +2,7 @@ from Blur import Gaussian_blur
 import matplotlib.pyplot as plt
 import math
 import os
+import time
 
 gb = Gaussian_blur()
 
@@ -12,7 +13,9 @@ index = int(input("Enter a index of image :"))
 image_name = image_files[index]
 color = bool(True if input("Do you want color [y/n]:") =='y' else False)
 
-sigmas = [round(i*0.1,1) for i in range(1,10,2)]
+start_time = time.time()
+
+sigmas = [round(i*0.1,1) for i in range(5,50,5)]
 n = len(sigmas)+1
 w = math.ceil(math.sqrt(n))
 blurred_images = []
@@ -34,5 +37,8 @@ for i in range(len(blurred_images)):
     plt.subplot(math.ceil(n/w),w,i+2)
     plt.imshow(blurred_images[i])
     plt.title(f"image with sigma : {sigmas[i]}")
+
+end_time = time.time()
+print("time taken", end_time - start_time)
 
 plt.show()

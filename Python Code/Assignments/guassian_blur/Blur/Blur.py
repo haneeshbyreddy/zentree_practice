@@ -48,7 +48,7 @@ class Gaussian_blur:
         with Image.open(path) as input_image:
             image = input_image.convert("RGB")
             image_matrix = np.array(image)
-            fil = [[1,0,-1],[1,0,-1],[1,0,-1]] if edge==0 else [[1,1,1],[0,0,0],[-1,-1,-1]]
+            fil = [[1,0,-1],[2,0,-2],[1,0,-1]] if edge==0 else [[1,2,1],[0,0,0],[-1,-2,-1]]
             return self.apply_filter(image_matrix, fil, channel=3)
 
     def blur(self, path, sigma=-1, color=False):

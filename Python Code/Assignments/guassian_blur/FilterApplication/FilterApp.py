@@ -1,3 +1,4 @@
+from PIL import Image
 from Blur.Blur import Gaussian_blur
 import matplotlib.pyplot as plt
 import math
@@ -7,52 +8,52 @@ class FilterApp:
 
     def __init__(self):
         self.gb = Gaussian_blur()
-        self.sigmas = []
         self.images = []
         self.names = []
 
-    def add_sigma_images(self,sigmas,input_location,output_location):
+    def matrix_to_image(self,image_matrix):
+        shape = image_matrix.shape
+        print(shape)
+        if len(shape) == 2:
+            image = Image.fromarray(image_matrix)
+            image = image.convert('L')
+        if len(shape) == 3:
+            image = Image.fromarray(image_matrix, mode="RGB")
+            image = image.convert('RGB')
+        return image
+
+    def add_sigma_images(self,sigmas,input_location,output_location,color):
             for i in sigmas:
-                out_path = output_location + '-'.join([str(i),"sigma",self.image_name])
+                out_path = output_location + '-'.join([str(i),"sigma","color" if color else "",self.image_name])
                 if not os.path.exists(out_path):
-                    blur_image = self.gb.blur(input_location+self.image_name, i, color=True)
-                    blur_image.save(out_path)
+                    with Image.open(input_location+self.image_name) as input_image:
+                        image = input_image.convert('RGB') if color else input_image.convert("L")
+                        self.matrix_to_image(self.gb.blur(image, i, color=color)).save(out_path)
                 self.images.append(plt.imread(out_path))
                 self.names.append(f"Image with sigma value {i}")
 
-    def add_edge_images(self,input_location,output_location):
-            out_path = output_location+"vertical-edge-" + self.image_name
-            if not os.path.exists(out_path):
-                blur_image = self.gb.edge(input_location+self.image_name, edge=0)
-                blur_image.save(out_path)
-            self.images.append(plt.imread(out_path))
-            self.names.append("Vertical Edge Filter")
+    def add_edge_images(self,input_location,output_location,color):
+            paths = ["vertical_edge", "horizontal_edge", "vertical_and_horizontal"]
+            for i,edge_name in enumerate(paths):
+                out_path = output_location + edge_name + ("-color-" if color else "-") + self.image_name
+                if not os.path.exists(out_path):
+                    with Image.open(input_location+self.image_name) as input_image:
+                        image = input_image.convert('RGB') if color else input_image.convert("L")
+                        self.matrix_to_image(self.gb.edge(image, edge=i, color=color)).save(out_path)
+                self.images.append(plt.imread(out_path))
+                self.names.append(f"{edge_name} Filter")
 
-            out_path = output_location+"horizontal-edge-" + self.image_name
-            if not os.path.exists(out_path):
-                blur_image = self.gb.edge(input_location+self.image_name, edge=1)
-                blur_image.save(out_path)
-            self.images.append(plt.imread(out_path))
-            self.names.append("Horizontal Edge Filter")
-
-    def start(self,input_location,output_location,sigmas=[],edge=False):
-
-        image_files = os.listdir(input_location)
-        for i, image_file in enumerate(image_files):
-            print(f"{i} : {image_file}")
-        index = int(input("Enter a index of image :"))
-        self.image_name = image_files[index]
-
+    def start(self,image_name,input_location,output_location,sigmas=[],edge=False,color=True):
+        self.image_name = image_name
         self.images.append(plt.imread(input_location+self.image_name))
         self.names.append("Original image")
 
         if len(sigmas)>0:
-            self.add_sigma_images(sigmas,input_location,output_location)
+            self.add_sigma_images(sigmas,input_location,output_location,color=color)
         if edge:
-            self.add_edge_images(input_location,output_location)
+            self.add_edge_images(input_location,output_location,color=color)
         
     def plot(self):
-
         n = len(self.images)
         w = math.ceil(math.sqrt(n))
 
@@ -60,6 +61,6 @@ class FilterApp:
 
         for i in range(len(self.images)):
             plt.subplot(math.ceil(n/w),w,i+1)
-            plt.imshow(self.images[i])
+            plt.imshow(self.images[i],cmap='gray')
             plt.title(self.names[i])
         plt.show()

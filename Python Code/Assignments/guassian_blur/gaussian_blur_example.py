@@ -17,8 +17,9 @@ print(image_name)
 
 color = bool(input("Do you want color images [y/n]:")=='y')
 edge = bool(input("Do you want edge images [y/n]:")=='y')
+laplacian = bool(input("Do you want laplacian images [y/n]:")=='y')
 
-fl.start(image_name,input_images,output_images,sigmas=[1,2],edge=edge,color=color)
+fl.start(image_name,input_images,output_images,sigmas=[1],edge=edge,color=color,laplacian=laplacian)
 end_time = time.time()
 fl.plot()
 print("Total Time Taken :",end_time-start_time)

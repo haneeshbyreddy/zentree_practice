@@ -52,3 +52,8 @@ class Gaussian_blur:
             matrix = self.apply_filter(image_matrix, np.stack([fil]*3,-1), channel=3 if color else 1) 
             fil = [[1,1,1],[0,0,0],[-1,-1,-1]]
             return self.apply_filter(matrix, np.stack([fil]*3,-1), channel=3 if color else 1)
+        
+    def laplacian(self, image, color):
+        image_matrix = np.array(image)
+        fil = [[0,-1,0],[-1,4,-1],[0,-1,0]]
+        return self.apply_filter(image_matrix, np.stack([fil]*3,-1), channel=3 if color else 1)

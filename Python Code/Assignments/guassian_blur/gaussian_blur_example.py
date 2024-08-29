@@ -16,10 +16,11 @@ image_name = image_files[index]
 print(image_name)
 
 color = bool(input("Do you want color images [y/n]:")=='y')
+gaussian = bool(input("Do you want gaussian images [y/n]:")=='y')
 edge = bool(input("Do you want edge images [y/n]:")=='y')
-laplacian = bool(input("Do you want laplacian images [y/n]:")=='y')
+sigmas = [1,2]
 
-fl.start(image_name,input_images,output_images,sigmas=[1],edge=edge,color=color,laplacian=laplacian)
+fl.start(image_name,input_images,output_images,sigmas=sigmas if gaussian else [],edge=edge,color=color)
 end_time = time.time()
 fl.plot()
 print("Total Time Taken :",end_time-start_time)

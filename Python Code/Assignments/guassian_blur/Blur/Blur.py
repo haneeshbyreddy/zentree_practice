@@ -25,7 +25,6 @@ class Gaussian_blur:
         if channel == 1:
             new_image_matrix = new_image_matrix[:,:,0]
         return new_image_matrix
-
     def gaussian_kernal(self, size, sigma=-1):
         func = lambda x, y : (1/(2*np.pi*sigma**2)) * np.exp(-((x-(size-1)/2)**2 + (y-(size-1)/2)**2) / (2*sigma**2))
         kernal = [[0 for _ in range(size)] for _ in range(size)]
@@ -39,21 +38,32 @@ class Gaussian_blur:
         gf = self.gaussian_kernal(2*int(np.ceil(3*sigma))+1)
         return self.apply_filter(np.array(image), np.stack([gf]*3,-1), channel=3 if color else 1)
 
-    def edge(self, image, edge, color):
-        image_matrix = np.array(image)
+    def edge(self, image, edge, color=False):
+        if not isinstance(image, np.ndarray):
+            image_matrix = np.array(image)
+        else:
+            image_matrix = image
         if edge==0:
-            fil = [[1,0,-1],[1,0,-1],[1,0,-1]]
+            fil = [[1,0,-1],[2,0,-2],[1,0,-1]]
             return self.apply_filter(image_matrix, np.stack([fil]*3,-1), channel=3 if color else 1)
         elif edge==1: 
-            fil = [[1,1,1],[0,0,0],[-1,-1,-1]]
+            fil = [[1,2,1],[0,0,0],[-1,-2,-1]]
             return self.apply_filter(image_matrix, np.stack([fil]*3,-1), channel=3 if color else 1)
         else:
-            fil = [[1,0,-1],[1,0,-1],[1,0,-1]]
+            fil = [[1,0,-1],[2,0,-2],[1,0,-1]]
             matrix = self.apply_filter(image_matrix, np.stack([fil]*3,-1), channel=3 if color else 1) 
-            fil = [[1,1,1],[0,0,0],[-1,-1,-1]]
+            fil = [[1,2,1],[0,0,0],[-1,-2,-1]]
             return self.apply_filter(matrix, np.stack([fil]*3,-1), channel=3 if color else 1)
         
     def laplacian(self, image, color):
         image_matrix = np.array(image)
         fil = [[0,-1,0],[-1,4,-1],[0,-1,0]]
         return self.apply_filter(image_matrix, np.stack([fil]*3,-1), channel=3 if color else 1)
+    
+    def canny(self, image, color):
+        image_1 = self.blur(image,3,color=color)
+        image_x = self.edge(image_1,0,color=color)
+        image_y = self.edge(image_1,1,color=color)
+        gradient = np.hypot(image_x,image_y)
+        return ((gradient / gradient.max()) * 255).astype(np.uint8)
+    

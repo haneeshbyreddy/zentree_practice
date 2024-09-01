@@ -18,5 +18,12 @@ ${OBJ}/cache.o: ${LIB}/cache.cpp ${INC}/cache.h
 ${OBJ}/cache_example.o: ${SRC}/cache_example.cpp ${INC}/cache.h
 	@${CXX} ${FLAGS} -I ${INC} -c ${SRC}/cache_example.cpp -o ${OBJ}/cache_example.o
 
+test: ${OBJ}/cache.o ${OBJ}/test_cache_example.o
+	@${CXX} ${FLAGS} -I ${INC} ${OBJ}/cache.o ${OBJ}/test_cache_example.o -o ${TARGET}/test
+	${TARGET}/test
+
+${OBJ}/test_cache_example.o: ${SRC}/test_cache_example.cpp ${INC}/cache.h
+	@${CXX} ${FLAGS} -I ${INC} -c ${SRC}/test_cache_example.cpp -o ${OBJ}/test_cache_example.o
+
 clean:
 	@rm -rf ${OBJ}/*.o ${TARGET}/build

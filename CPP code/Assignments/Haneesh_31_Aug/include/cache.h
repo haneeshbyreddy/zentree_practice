@@ -8,17 +8,17 @@ using namespace std;
 class Cache {
     public:
         Cache(int lines);
-        int Fetch(int val);
+        int Fetch(int process);
+        int Least_recently_used();
 
     private:
         int i = 0;
-        bool filled = false;
         vector<int> age_bits;
         vector<vector<int>> cache;
-        unordered_map<int, int> val_index;
+        unordered_map<int, int> process_index;
 
-        void Fill(int val);
-        void Replace(int val);
-        int Search(int val);
-        void get_age_bits();
+        void Fill(int process);
+        void Replace(int process);
+        int Search(int process);
+        void Get_cache_lines();
 };

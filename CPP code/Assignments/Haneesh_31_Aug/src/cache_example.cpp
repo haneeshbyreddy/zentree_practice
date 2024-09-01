@@ -7,12 +7,11 @@ int main() {
     std::cin >> lines;
 
     Cache p_lru(lines);
-    int value;
+    int process;
 
-    std::cout << "Enter values to insert into the cache (enter -1 to stop):\n";
-    while (std::cin >> value && value != -1) {
-        p_lru.Fetch(value);
+    std::cout << "Enter process to insert into the cache (enter -1 to stop):\n";
+    while (std::cin >> process && process != -1) {
+        p_lru.Fetch(process);
     }
-
     return 0;
 }

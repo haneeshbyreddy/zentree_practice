@@ -20,5 +20,6 @@ class Cache {
         void Fill(int process);
         void Replace(int process);
         int Search(int process);
+        void Get_age_bits();
         void Get_cache_lines();
 };

@@ -8,19 +8,24 @@ Cache::Cache(int lines) {
     for (int j=1;j<lines;j++) age_bits.push_back(0);
 };
 
-int Cache::Least_recently_used() {
-    i = 0;
-    while((2*i)+1<age_bits.size()) {
-        i = (age_bits[i] == 0) ? (2*i)+2 : (2*i)+1;
-    }
-    int index = (i - (age_bits.size()/2))*2 + age_bits[i];
-    return cache[index][0];
+void Cache::Get_age_bits() {
+    for (int i : age_bits) cout << i << " ";
+    cout << "\n";
 }
 
 void Cache::Get_cache_lines() {
     string ans = "";
     for (vector<int> i : cache) cout << i[0] << " ";
-    cout << "\n";
+    cout << "\n\n";
+}
+
+int Cache::Least_recently_used() {
+    i = 0;
+    while((2*i)+1<age_bits.size()) {
+        i = (age_bits[i] == 0) ? (2*i)+2 : (2*i)+1;
+    }
+    int index = (i - (age_bits.size()/2))*2 + (age_bits[i]*-1)+1;
+    return cache[index][0];
 }
 
 int Cache::Search(int process) {
@@ -61,6 +66,7 @@ int Cache::Fetch(int process) {
     if (process_index.find(process) == process_index.end()) Replace(process);
     else Search(process);
 
+    Get_age_bits();
     Get_cache_lines();
     return process;
 }

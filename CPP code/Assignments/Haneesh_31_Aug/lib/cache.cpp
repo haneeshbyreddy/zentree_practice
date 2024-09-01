@@ -4,7 +4,7 @@
 using namespace std;
 
 Cache::Cache(int lines) {
-    cache.resize(lines, vector<int>(1));
+    cache.resize(lines, vector<int>(1, -1));
     for (int j=1;j<lines;j++) age_bits.push_back(0);
 };
 
@@ -66,7 +66,7 @@ int Cache::Fetch(int process) {
     if (process_index.find(process) == process_index.end()) Replace(process);
     else Search(process);
 
-    Get_age_bits();
-    Get_cache_lines();
+    // Get_age_bits();
+    // Get_cache_lines();
     return process;
 }

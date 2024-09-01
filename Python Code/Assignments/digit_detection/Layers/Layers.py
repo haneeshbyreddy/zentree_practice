@@ -77,10 +77,15 @@ class Layers:
     
     def fc(self, image_matrix, n):
         weights = np.random.rand(image_matrix.shape[1], n) * 2 - 1
-        print(weights.shape)
+        # weights = np.random.rand(image_matrix.shape[1], n) * np.sqrt(2.0 / image_matrix.shape[1])
+        print("weights :",weights.shape)
         output = image_matrix @ weights
         return output
     
-    def softmax(self, x):
+    def softmax(self, x, temparature=10):
+        x = x / temparature
         e = np.exp(x - np.max(x))
         return e / np.sum(e)
+    
+    def loss_function(self, final, expected):
+        return (final - expected)**2/len(final)

@@ -75,17 +75,75 @@ class Layers:
     def flatten(self, image_matrix):
         return np.array([image_matrix.flatten()])
     
-    def fc(self, image_matrix, n):
-        weights = np.random.rand(image_matrix.shape[1], n) * 2 - 1
-        # weights = np.random.rand(image_matrix.shape[1], n) * np.sqrt(2.0 / image_matrix.shape[1])
-        print("weights :",weights.shape)
+    def fc(self, image_matrix, weights):
         output = image_matrix @ weights
         return output
     
-    def softmax(self, x, temparature=10):
+    def softmax(self, x, temparature=1):
         x = x / temparature
         e = np.exp(x - np.max(x))
-        return e / np.sum(e)
+        return e / np.sum(np.exp(e))
     
     def loss_function(self, final, expected):
         return (final - expected)**2/len(final)
+    
+    def apply_stacks(self, img, stacks):
+        for i in stacks:
+            stack = self.conv(np.array(img), i)
+            stack_maxpool = self.maxpool(stack)
+            stack_relu = self.relu(stack_maxpool)
+            img = stack_relu
+        return img
+    
+    def apply_fc(self, img, weights):
+        output = img
+        self.act_out = []
+        for i in weights:
+            fc_out = self.fc(output, i)
+            if i.shape != weights[-1].shape:
+                fc_relu = self.relu(fc_out)
+            else:
+                fc_relu = fc_out
+            output = fc_relu
+            self.act_out.append(output)
+        return output
+    
+    def dl_dw(self, final, label, weights):
+        learning_rate = 0.01
+        gradients = []
+        error = final - label
+        error = error.reshape(-1, 1)
+
+        for i in range(len(weights)):
+            if i == 0:
+                activation = self.act_out[-2]
+            else:
+                activation = self.act_out[-i-2]
+
+            gradient = np.outer(activation.T, error)
+            error = np.dot(weights[i], error) * (activation > 0)
+            gradients.append(gradient)
+            weights[i] -= learning_rate * gradient
+
+        return gradients
+
+
+
+    
+    def backtrack(self, images, labels, stacks, fc_weights):
+        back_weights = []
+        changes = []
+
+        for i in range(len(fc_weights)-1):
+            back_weights.append(np.random.rand(fc_weights[i], fc_weights[i+1]) * 2 - 1)
+            changes.append(np.zeros((fc_weights[i], fc_weights[i+1])))
+        
+        for i in range(len(images)):
+            label = [0 if labels[0] != i else 1 for i in range(10)]
+            img_s = self.apply_stacks(images[i], stacks)
+            flat = self.flatten(img_s)
+            output = self.apply_fc(flat, back_weights)
+            final = self.softmax(output)
+            changes += self.dl_dw(final, label, back_weights[::-1])
+
+        return back_weights + changes

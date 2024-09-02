@@ -1,4 +1,5 @@
 ### Layers
+
 - Covolve(3,16)
 - Maxpool(2,2)
 - Relu
@@ -8,7 +9,9 @@
 - Covolve(32,64)
 - Maxpool(2,2)
 - Relu
-- Flatten(128)
+
+- Flatten
+
 - Fully Connected(128)
 - Relu
 - Fully Connected(128,64)

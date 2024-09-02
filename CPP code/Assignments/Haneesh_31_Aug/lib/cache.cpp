@@ -67,6 +67,6 @@ int Cache::Fetch(int process) {
     else Search(process);
 
     // Get_age_bits();
-    // Get_cache_lines();
+    Get_cache_lines();
     return process;
 }

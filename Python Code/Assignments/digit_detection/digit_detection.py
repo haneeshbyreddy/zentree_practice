@@ -1,7 +1,6 @@
 from Layers import Layers
 from PIL import Image
 import numpy as np
-import time
 import idx2numpy
 
 file_path_img = 'data/input/train-images-idx3-ubyte'
@@ -12,35 +11,21 @@ labels = idx2numpy.convert_from_file(file_path_label)
 
 img = images[0]
 true_output = [0 if labels[0] != i else 1 for i in range(10)]
+stacks = [16, 32, 64]
+fc_weights = [23104, 128, 64, 10]
 
 lay = Layers()
 
-start_time = time.time()
+weights = lay.backtrack(images[:10], labels[:10], stacks, fc_weights)
 
-stacks = [16, 32, 64]
-for i in stacks:
-    stack = lay.conv(np.array(img), i)
-    stack_maxpool = lay.maxpool(stack)
-    stack_relu = lay.relu(stack_maxpool)
-    print(stack_relu.shape)
-    img = stack_relu
+img = lay.apply_stacks(img, stacks)
 
-output = lay.flatten(img)
-print("flattened :", output)
+flattened = lay.flatten(img)
 
-fc_layers = [128, 64]
-for i in fc_layers:
-    fc_out = lay.fc(output, i)
-    fc_relu = lay.relu(fc_out)
-    output = fc_relu
-    print("fc output :", output.shape)
+output = lay.apply_fc(flattened, weights)
 
-final = lay.fc(output, 10)
-final = lay.softmax(final)
-print("softmax values :", final)
+print("Before softmax values :", np.round(output,1))
 
-loss = lay.loss_function(final, true_output)
-print("loss :", loss)
+final = lay.softmax(output)
 
-end_time = time.time()
-print("\nTime taken :", end_time-start_time)
+print("softmax values :", np.round(final,1))

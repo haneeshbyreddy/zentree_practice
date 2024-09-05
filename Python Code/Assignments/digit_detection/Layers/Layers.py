@@ -108,22 +108,13 @@ class Layers:
             self.act_out.append(output)
         return output
     
-    def dl_dw(self, final, label, weights):
+    def dl_dw(self, final, label):
         learning_rate = 0.01
         gradients = []
         error = final - label
-        error = error.reshape(-1, 1)
 
-        for i in range(len(weights)):
-            if i == 0:
-                activation = self.act_out[-2]
-            else:
-                activation = self.act_out[-i-2]
-
-            gradient = np.outer(activation.T, error)
-            error = np.dot(weights[i], error) * (activation > 0)
-            gradients.append(gradient)
-            weights[i] -= learning_rate * gradient
+        self.back_weights
+        self.act_out
 
         return gradients
 
@@ -131,19 +122,19 @@ class Layers:
 
     
     def backtrack(self, images, labels, stacks, fc_weights):
-        back_weights = []
+        self.back_weights = []
         changes = []
 
         for i in range(len(fc_weights)-1):
-            back_weights.append(np.random.rand(fc_weights[i], fc_weights[i+1]) * 2 - 1)
+            self.back_weights.append(np.random.rand(fc_weights[i], fc_weights[i+1]) * 2 - 1)
             changes.append(np.zeros((fc_weights[i], fc_weights[i+1])))
         
         for i in range(len(images)):
             label = [0 if labels[0] != i else 1 for i in range(10)]
             img_s = self.apply_stacks(images[i], stacks)
             flat = self.flatten(img_s)
-            output = self.apply_fc(flat, back_weights)
+            output = self.apply_fc(flat, self.back_weights)
             final = self.softmax(output)
-            changes += self.dl_dw(final, label, back_weights[::-1])
+            changes += self.dl_dw(final, label)
 
-        return back_weights + changes
+        return self.back_weights + changes

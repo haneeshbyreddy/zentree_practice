@@ -10,8 +10,7 @@ class ImageLoader:
 
 
     @classmethod
-    def load_jpg(cls, split, device):
-        path = "data/input/trainingSet"
+    def load_jpg(cls, split, path, device):
         images = []
         labels = []
         for i in os.listdir(path):

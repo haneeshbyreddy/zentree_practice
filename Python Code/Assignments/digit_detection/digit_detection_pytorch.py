@@ -12,8 +12,8 @@ print("device", device, "is being used")
 
 conf = {
     'batch_size': 10,
-    "l_rate": 0.0003,
-    "epoch": 1,
+    "l_rate": 0.001,
+    "epoch": 10,
     "conv": True,
     "load_jpg": [True, 0.8, "60k"],
 }

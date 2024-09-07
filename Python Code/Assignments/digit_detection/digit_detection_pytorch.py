@@ -5,6 +5,9 @@ from Helper import ImageLoader, GetModel, Plotter
 import matplotlib.pyplot as plt
 import os
 import json
+import time
+
+start_time = time.time()
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 device = torch.device('mps' if torch.backends.mps.is_available() else 'cpu')
@@ -83,6 +86,7 @@ with open(json_file, mode='r', encoding='utf-8') as read_file:
     for entry in json_arr:
         if {k: entry[k] for k in conf} == conf:
             entry['accuracy'].append(accuracy.item())
+            entry['time_taken'] = time.time() - start_time
             conf_exists = True
             break
     if not conf_exists:

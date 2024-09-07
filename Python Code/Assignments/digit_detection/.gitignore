@@ -1,4 +1,6 @@
 __pycache__
 venv
 .venv
-data
+data/input
+data/output
+data/models

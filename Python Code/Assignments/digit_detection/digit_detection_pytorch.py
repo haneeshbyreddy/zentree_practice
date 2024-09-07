@@ -7,13 +7,14 @@ import os
 import json
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+device = torch.device('mps' if torch.backends.mps.is_available() else 'cpu')
 print("device", device, "is being used")
 
 conf = {
-    'batch_size': 30,
-    "l_rate": 0.0002,
-    "epoch": 80,
-    "conv": False,
+    'batch_size': 10,
+    "l_rate": 0.0003,
+    "epoch": 1,
+    "conv": True,
     "load_jpg": [True, 0.8, "60k"],
 }
 

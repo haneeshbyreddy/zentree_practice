@@ -1,0 +1,16 @@
+[
+    {
+        "batch_size": 10,
+        "l_rate": 0.0003,
+        "epoch": 1,
+        "conv": true,
+        "load_jpg": [
+            true,
+            0.8,
+            "60k"
+        ],
+        "accuracy": [
+            11.384882926940918
+        ]
+    }
+]

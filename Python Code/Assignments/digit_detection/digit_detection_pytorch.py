@@ -7,12 +7,15 @@ start_time = time.time()
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 device = torch.device('mps' if torch.backends.mps.is_available() else 'cpu')
+if device not in ['cuda', 'mps']:
+    torch.set_num_threads(8)
+    print("Threads set to 8")
 print("device", device, "is being used")
 
 conf = {
-    'batch_size': 100,
-    "l_rate": 0.00005,
-    "epoch": 18,
+    'batch_size': 50,
+    "l_rate": 0.000005,
+    "epoch": 20,
     "conv": True,
     "load_jpg": [True, 0.8, "60k"],
 }

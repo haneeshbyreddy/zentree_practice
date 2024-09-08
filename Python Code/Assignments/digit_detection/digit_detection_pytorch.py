@@ -13,9 +13,9 @@ if device not in ['cuda', 'mps']:
 print("device", device, "is being used")
 
 conf = {
-    'batch_size': 50,
-    "l_rate": 0.000005,
-    "epoch": 20,
+    'batch_size': 1,
+    "l_rate": 0.001,
+    "epoch": 5,
     "conv": True,
     "load_jpg": [True, 0.8, "60k"],
 }

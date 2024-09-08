@@ -9,8 +9,9 @@ start_time = time.time()
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 device = torch.device('mps' if torch.backends.mps.is_available() else 'cpu')
 if str(device) not in ['cuda', 'mps']:
-    torch.set_num_threads(8)
-    print("Threads set to 8")
+    print(torch.get_num_threads())
+    torch.set_num_threads(16)
+    print("Threads set to 16")
 print("device", device, "is being used")
 
 conf = {

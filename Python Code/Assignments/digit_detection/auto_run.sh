@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Define the arrays
-array1=(100 50 200 400 500)
-array2=(0.001 0.001 0.001 0.001 0.001)
-array3=(10 10 15 20 5)
+array1=(500 500 60 80)
+array2=(0.0001 0.0001 0.00005 0.00005)
+array3=(4 6 3 4)
 
 # Determine the length of the arrays (assuming all arrays have the same length)
 length=${#array1[@]}
@@ -19,5 +19,7 @@ for (( i=0; i<length; i++ )); do
     echo "Running with arguments: $arg1 $arg2 $arg3"
 
     # Run the Python script with the selected arguments
-    python3 digit_detection_pytorch.py $arg1 $arg2 $arg3
+    python3 digit_detection_pytorch.py $arg1 $arg2 $arg3 && curl -d "Model $i is done" ntfy.sh/byreddy_ml
 done
+sleep 1
+curl -d "All models done" ntfy.sh/byreddy

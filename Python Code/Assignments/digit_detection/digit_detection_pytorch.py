@@ -2,12 +2,13 @@ import torch
 from torch import tensor
 from Helper import ImageLoader, GetModel, Plotter, TrainModel, Json
 import os, time
+import sys
 
 start_time = time.time()
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 device = torch.device('mps' if torch.backends.mps.is_available() else 'cpu')
-if device not in ['cuda', 'mps']:
+if str(device) not in ['cuda', 'mps']:
     torch.set_num_threads(8)
     print("Threads set to 8")
 print("device", device, "is being used")
@@ -19,6 +20,12 @@ conf = {
     "conv": True,
     "load_jpg": [True, 0.8, "60k"],
 }
+
+if len(sys.argv)>1 and len(sys.argv)==4:
+    print("Updating conf from argv")
+    conf["batch_size"] = int(sys.argv[1])
+    conf["l_rate"] = float(sys.argv[2])
+    conf["epoch"] = int(sys.argv[3])
 
 # Loading Data
 data = ImageLoader.load_jpg(conf['load_jpg'][1], "data/input/"+conf['load_jpg'][2], device) if conf['load_jpg'][0] else ImageLoader.load_binary(device)
